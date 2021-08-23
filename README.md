@@ -1,0 +1,3 @@
+# fastcopy
+
+Just because I can...
