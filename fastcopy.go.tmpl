@@ -1,3 +1,7 @@
+/*
+* CODE GENERATED AUTOMATICALLY WITH github.com/probably-not/fastcopy/cmd/gen.go
+*/
+
 package fastcopy
 {{ with .Copies }}{{ range . }}
 func copy{{ .T }}{{ .N }}(dst, src []{{ .T }}) {
