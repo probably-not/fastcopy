@@ -1,0 +1,6 @@
+package fastcopy
+{{ with .Copies }}{{ range . }}
+func copy{{ .T }}{{ .N }}(dst, src []{{ .T }}) {
+	*(*[{{ .N }}]{{ .T }})(dst) = *(*[{{ .N }}]{{ .T }})(src)
+}
+{{ end }}{{ end }}
