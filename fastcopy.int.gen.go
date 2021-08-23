@@ -2,7 +2,35 @@
 
 package fastcopy
 
-var CopyIntSlice = [10]func([]int, []int){}
+var CopyIntSlice = [11]func([]int, []int){
+	
+	0: copyIntSlice0,
+	
+	1: copyIntSlice1,
+	
+	2: copyIntSlice2,
+	
+	3: copyIntSlice3,
+	
+	4: copyIntSlice4,
+	
+	5: copyIntSlice5,
+	
+	6: copyIntSlice6,
+	
+	7: copyIntSlice7,
+	
+	8: copyIntSlice8,
+	
+	9: copyIntSlice9,
+	
+	10: copyIntSlice10,
+	
+}
+
+func copyIntSlice0(dst, src []int) {
+	*(*[0]int)(dst) = *(*[0]int)(src)
+}
 
 func copyIntSlice1(dst, src []int) {
 	*(*[1]int)(dst) = *(*[1]int)(src)

@@ -2,7 +2,35 @@
 
 package fastcopy
 
-var CopyByteSlice = [10]func([]byte, []byte){}
+var CopyByteSlice = [11]func([]byte, []byte){
+	
+	0: copyByteSlice0,
+	
+	1: copyByteSlice1,
+	
+	2: copyByteSlice2,
+	
+	3: copyByteSlice3,
+	
+	4: copyByteSlice4,
+	
+	5: copyByteSlice5,
+	
+	6: copyByteSlice6,
+	
+	7: copyByteSlice7,
+	
+	8: copyByteSlice8,
+	
+	9: copyByteSlice9,
+	
+	10: copyByteSlice10,
+	
+}
+
+func copyByteSlice0(dst, src []byte) {
+	*(*[0]byte)(dst) = *(*[0]byte)(src)
+}
 
 func copyByteSlice1(dst, src []byte) {
 	*(*[1]byte)(dst) = *(*[1]byte)(src)

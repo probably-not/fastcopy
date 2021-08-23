@@ -2,7 +2,35 @@
 
 package fastcopy
 
-var CopyStringSlice = [10]func([]string, []string){}
+var CopyStringSlice = [11]func([]string, []string){
+	
+	0: copyStringSlice0,
+	
+	1: copyStringSlice1,
+	
+	2: copyStringSlice2,
+	
+	3: copyStringSlice3,
+	
+	4: copyStringSlice4,
+	
+	5: copyStringSlice5,
+	
+	6: copyStringSlice6,
+	
+	7: copyStringSlice7,
+	
+	8: copyStringSlice8,
+	
+	9: copyStringSlice9,
+	
+	10: copyStringSlice10,
+	
+}
+
+func copyStringSlice0(dst, src []string) {
+	*(*[0]string)(dst) = *(*[0]string)(src)
+}
 
 func copyStringSlice1(dst, src []string) {
 	*(*[1]string)(dst) = *(*[1]string)(src)
