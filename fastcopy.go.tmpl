@@ -2,7 +2,11 @@
 
 package fastcopy
 
-var Copy{{ .T | Title }}Slice = [{{ .MaxL }}]func([]{{ .T }}, []{{ .T }}){}
+var Copy{{ .T | Title }}Slice = [{{ .MaxL }}]func([]{{ .T }}, []{{ .T }}){
+	{{ range $val := Iterate .MaxL }}
+	{{ $val }}: copy{{ $.T | Title }}Slice{{ $val }},
+	{{ end }}
+}
 {{ with .CopyFuncGenerators }}{{ range . }}
 func copy{{ .T | Title }}Slice{{ .N }}(dst, src []{{ .T }}) {
 	*(*[{{ .N }}]{{ .T }})(dst) = *(*[{{ .N }}]{{ .T }})(src)
