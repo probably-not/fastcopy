@@ -4,7 +4,26 @@
 
 package fastcopy
 
-var CopyInt16Slice = [8193]func([]int16, []int16){
+func CopyInt16Slice(dst, src []int16) {
+	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
+	if len(src) > 8192 {
+		copy(dst, src)
+		return
+	}
+
+	if len(dst) < len(src) {
+		// If len(dst) is less than len(src), then we need to copy with the size equal to len(dst)
+		// in order to not panic by getting an array that is bigger than len(dst)
+		copyInt16SliceIdx[len(dst)](dst, src)
+		return
+	}
+
+	// If len(src) is within our limits and greater than len(dst), then we need to copy with the
+	// size equal to len(src) in order to not panic by getting an array that is bigger than len(src)
+	copyInt16SliceIdx[len(src)](dst, src)
+}
+
+var copyInt16SliceIdx = [8193]func([]int16, []int16){
 	
 	0: copyInt16Slice0,
 	
