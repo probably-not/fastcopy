@@ -41,7 +41,7 @@ func main() {
 	for _, v := range []string{"byte", "string", "int", "float64"} {
 		data := fastcopy{
 			T:                  v,
-			MaxL:               maxN,
+			MaxL:               maxN + 1, // Since we use it as the array size it needs to be plus one (I think?)
 			CopyFuncGenerators: make([]copyFuncGenerator, 0),
 		}
 
