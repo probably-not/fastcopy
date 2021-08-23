@@ -23,7 +23,7 @@ type copyFuncGenerator struct {
 	T string
 }
 
-const maxN = 10
+const maxN = 1024
 
 func main() {
 	b, err := os.ReadFile("fastcopy.go.tmpl")
