@@ -45,7 +45,9 @@ func main() {
 		panic(err)
 	}
 
-	for _, v := range []string{"byte", "string", "int", "float64"} {
+	for _, v := range []string{
+		"bool", "string", "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32",
+		"uint64", "uintptr", "byte", "rune", "float32", "float64", "complex64", "complex128"} {
 		data := fastcopy{
 			T:                  v,
 			MaxL:               maxN + 1, // Since we use it as the array size it needs to be plus one (I think?)
