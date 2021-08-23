@@ -33,6 +33,13 @@ func main() {
 
 	t, err := template.New("config").Funcs(template.FuncMap{
 		"Title": strings.Title,
+		"Iterate": func(count int) []int {
+			iter := make([]int, count)
+			for i := 0; i < count; i++ {
+				iter[i] = i
+			}
+			return iter
+		},
 	}).Parse(string(b))
 	if err != nil {
 		panic(err)
@@ -45,7 +52,7 @@ func main() {
 			CopyFuncGenerators: make([]copyFuncGenerator, 0),
 		}
 
-		for i := 1; i <= maxN; i++ {
+		for i := 0; i <= maxN; i++ {
 			data.CopyFuncGenerators = append(data.CopyFuncGenerators, copyFuncGenerator{i, v})
 		}
 
