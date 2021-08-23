@@ -4,7 +4,21 @@
 
 package fastcopy
 
-var Copy{{ .T | Title }}Slice = [{{ .MaxL }}]func([]{{ .T }}, []{{ .T }}){
+func Copy{{ .T | Title }}Slice(dst, src []{{ .T }}) {
+	if len(dst) < len(src) {
+		panic("Copy{{ .T | Title }}Slice attempted with invalid len for dst. len(dst) must be at least equal to len(src)")
+	}
+
+	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
+	if len(src) > {{.MaxL}} {
+		copy(dst, src)
+	}
+
+	// If len(src) is within our generation, we utilize the "optimized" copy function.
+	copy{{ .T | Title }}SliceIdx[len(src)](dst, src)
+}
+
+var copy{{ .T | Title }}SliceIdx = [{{ .MaxL }}]func([]{{ .T }}, []{{ .T }}){
 	{{ range $val := Iterate .MaxL }}
 	{{ $val }}: copy{{ $.T | Title }}Slice{{ $val }},
 	{{ end }}
