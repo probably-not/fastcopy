@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -23,7 +24,9 @@ func main() {
 		panic(err)
 	}
 
-	t, err := template.New("config").Parse(string(b))
+	t, err := template.New("config").Funcs(template.FuncMap{
+		"Title": strings.Title,
+	}).Parse(string(b))
 	if err != nil {
 		panic(err)
 	}
