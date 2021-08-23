@@ -10,6 +10,7 @@ import (
 type fastcopy struct {
 	T                  string
 	MaxL               int
+	MaxN               int
 	CopyFuncGenerators []copyFuncGenerator
 }
 
@@ -51,6 +52,7 @@ func main() {
 		data := fastcopy{
 			T:                  v,
 			MaxL:               maxN + 1, // Since we use it as the array size it needs to be plus one (I think?)
+			MaxN:               maxN,     // Since we use it as the array size it needs to be plus one (I think?)
 			CopyFuncGenerators: make([]copyFuncGenerator, 0),
 		}
 

@@ -10,7 +10,7 @@ func Copy{{ .T | Title }}Slice(dst, src []{{ .T }}) {
 	}
 
 	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
-	if len(src) > {{.MaxL}} {
+	if len(src) > {{ .MaxN }} {
 		copy(dst, src)
 	}
 
