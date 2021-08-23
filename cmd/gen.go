@@ -8,10 +8,17 @@ import (
 )
 
 type fastcopy struct {
-	Copies []copy
+	T                  string
+	MaxL               int
+	CopyFuncGenerators []copyFuncGenerator
 }
 
-type copy struct {
+type copyFuncMapper struct {
+	T string
+	L int
+}
+
+type copyFuncGenerator struct {
 	N int
 	T string
 }
@@ -31,22 +38,27 @@ func main() {
 		panic(err)
 	}
 
-	file, err := os.Create("fastcopy.gen.go")
-	if err != nil {
-		panic(err)
-	}
-
-	data := fastcopy{make([]copy, 0)}
 	for _, v := range []string{"byte", "string", "int", "float64"} {
-		for i := 1; i <= maxN; i++ {
-			data.Copies = append(data.Copies, copy{i, v})
+		data := fastcopy{
+			T:                  v,
+			MaxL:               maxN,
+			CopyFuncGenerators: make([]copyFuncGenerator, 0),
 		}
+
+		for i := 1; i <= maxN; i++ {
+			data.CopyFuncGenerators = append(data.CopyFuncGenerators, copyFuncGenerator{i, v})
+		}
+
+		file, err := os.Create(fmt.Sprintf("fastcopy.%s.gen.go", v))
+		if err != nil {
+			panic(err)
+		}
+		err = t.Execute(file, data)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Generated", v, "Fastcopy Functions!")
 	}
 
-	err = t.Execute(file, data)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Generated!")
+	fmt.Println("Finished!")
 }

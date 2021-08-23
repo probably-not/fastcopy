@@ -1,7 +1,9 @@
 // CODE GENERATED AUTOMATICALLY WITH github.com/probably-not/fastcopy/cmd/gen.go
 
 package fastcopy
-{{ with .Copies }}{{ range . }}
+
+var Copy{{ .T | Title }}Slice = [{{ .MaxL }}]func([]{{ .T }}, []{{ .T }}){}
+{{ with .CopyFuncGenerators }}{{ range . }}
 func copy{{ .T | Title }}Slice{{ .N }}(dst, src []{{ .T }}) {
 	*(*[{{ .N }}]{{ .T }})(dst) = *(*[{{ .N }}]{{ .T }})(src)
 }
