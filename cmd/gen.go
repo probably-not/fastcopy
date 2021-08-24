@@ -96,7 +96,12 @@ func main() {
 			data.CopyFuncGenerators = append(data.CopyFuncGenerators, copyFuncGenerator{i, v})
 		}
 
-		file, err := os.Create(fmt.Sprintf("fastcopy.%s.gen.go", v))
+		err := os.MkdirAll(fmt.Sprintf("./%s", v), 0700)
+		if err != nil {
+			log.Fatalf("Unable to create directory for ./%s with error: %v", v, err)
+		}
+
+		file, err := os.Create(fmt.Sprintf("./%s/fastcopy_gen_go1.17.go", v))
 		if err != nil {
 			log.Fatalf("Unable to create generated file fastcopy.%s.gen.go with error: %v", v, err)
 		}
