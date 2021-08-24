@@ -4,6 +4,8 @@ import (
 	"math/rand"
 	"reflect"
 	"testing"
+
+	"github.com/probably-not/fastcopy/util"
 )
 
 var testCases = []struct {
@@ -42,6 +44,19 @@ var testCases = []struct {
 
 func Test_FastCopyInt16_Simple(t *testing.T) {
 	t.Parallel()
+
+	// Ensure that when isOptimized is true we are above Go1.17
+	// Like I said... it's not that I don't trust build constraints, but, I don't trust build constraints.
+	major, minor, patch := util.ParseGoVersion()
+	if isOptimized && !(major >= 1 && minor >= 17) {
+		t.Fatalf("isOptimized is true and go version is not above 1.17. Expected Go>=1.17, Got: Go=%d.%d.%d", major, minor, patch)
+		t.FailNow()
+	}
+	if !isOptimized && (major >= 1 && minor >= 17) {
+		t.Fatalf("isOptimized is false and go version is above 1.17. Expected Go>=1.17, Got: Go=%d.%d.%d", major, minor, patch)
+		t.FailNow()
+	}
+
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(sub *testing.T) {
 			sub.Parallel()
