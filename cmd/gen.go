@@ -29,7 +29,7 @@ const maxN = 8192 // Generate functions for copying up until 8k.
 func main() {
 	b, err := os.ReadFile("fastcopy.go.tmpl")
 	if err != nil {
-		panic(err)
+		log.Fatalf("Unable to read template file fastcopy.go.tmpl with error: %v", err)
 	}
 
 	t, err := template.New("config").Funcs(template.FuncMap{
@@ -43,7 +43,7 @@ func main() {
 		},
 	}).Parse(string(b))
 	if err != nil {
-		panic(err)
+		log.Fatalf("Unable to parse template file fastcopy.go.tmpl with error: %v", err)
 	}
 
 	for _, v := range []string{
@@ -62,14 +62,14 @@ func main() {
 
 		file, err := os.Create(fmt.Sprintf("fastcopy.%s.gen.go", v))
 		if err != nil {
-			panic(err)
+			log.Fatalf("Unable to create generated file fastcopy.%s.gen.go with error: %v", v, err)
 		}
 		err = t.Execute(file, data)
 		if err != nil {
-			panic(err)
+			log.Fatalf("Unable to execute template for generated file fastcopy.%s.gen.go with error: %v", v, err)
 		}
-		fmt.Println("Generated", v, "Fastcopy Functions!")
+		log.Println("Generated", v, "Fastcopy Functions!")
 	}
 
-	fmt.Println("Finished!")
+	log.Println("Finished!")
 }
