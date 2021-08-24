@@ -50,7 +50,7 @@ var testCases = []struct {
 	},
 }
 
-func Test_FastCopyString(t *testing.T) {
+func Test_FastCopyString_Simple(t *testing.T) {
 	t.Parallel()
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(sub *testing.T) {
