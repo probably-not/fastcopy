@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -65,12 +66,12 @@ func main() {
 		os.Exit(0)
 	}
 
-	go117Bytes, err := os.ReadFile("fastcopy_go117.go.tmpl")
+	go117Bytes, err := ioutil.ReadFile("fastcopy_go117.go.tmpl")
 	if err != nil {
 		log.Fatalf("Unable to read template file fastcopy_go1.17.go.tmpl with error: %v", err)
 	}
 
-	notGo117Bytes, err := os.ReadFile("fastcopy_go117_nobuild.go.tmpl")
+	notGo117Bytes, err := ioutil.ReadFile("fastcopy_go117_nobuild.go.tmpl")
 	if err != nil {
 		log.Fatalf("Unable to read template file fastcopy.go.tmpl with error: %v", err)
 	}
