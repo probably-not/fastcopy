@@ -3,7 +3,7 @@ name: Go Benchmark (1.17)
 on: [push]
 
 jobs:
-  test:
+  benchmark:
     env:
       IS_TEST: true
     runs-on: ubuntu-latest
@@ -16,5 +16,5 @@ jobs:
           go-version: "1.17"
       - name: Install Dependencies
         run: go mod download
-      - name: Go Test
+      - name: Go Benchmark
         run: go test -benchmem -bench=. $(go list ./...)
