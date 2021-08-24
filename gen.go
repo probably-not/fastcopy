@@ -11,9 +11,9 @@ import (
 
 type fastcopy struct {
 	T                  string
+	CopyFuncGenerators []copyFuncGenerator
 	MaxL               int
 	MaxN               int
-	CopyFuncGenerators []copyFuncGenerator
 }
 
 type copyFuncMapper struct {
@@ -22,8 +22,8 @@ type copyFuncMapper struct {
 }
 
 type copyFuncGenerator struct {
-	N int
 	T string
+	N int
 }
 
 var (
@@ -105,7 +105,7 @@ func main() {
 		}
 
 		for i := 0; i <= maxN; i++ {
-			data.CopyFuncGenerators = append(data.CopyFuncGenerators, copyFuncGenerator{i, v})
+			data.CopyFuncGenerators = append(data.CopyFuncGenerators, copyFuncGenerator{v, i})
 		}
 
 		err := os.MkdirAll(fmt.Sprintf("./%s", v), 0700)
