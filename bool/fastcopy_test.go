@@ -121,3 +121,48 @@ func Benchmark_FastCopyBool_Complex(b *testing.B) {
 		})
 	}
 }
+
+func Benchmark_CopyBool_Simple(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]bool, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = true
+				}
+			}
+
+			cp := make([]bool, len(original))
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cp, original)
+			}
+		})
+	}
+}
+
+func Benchmark_CopyBool_Complex(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]bool, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = true
+				}
+			}
+
+			var cps [128][]bool
+			for i := range cps {
+				cps[i] = make([]bool, tC.size)
+			}
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cps[i&127], original)
+			}
+		})
+	}
+}

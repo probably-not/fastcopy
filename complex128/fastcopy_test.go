@@ -121,3 +121,48 @@ func Benchmark_FastCopyComplex128_Complex(b *testing.B) {
 		})
 	}
 }
+
+func Benchmark_CopyComplex128_Simple(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]complex128, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			cp := make([]complex128, len(original))
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cp, original)
+			}
+		})
+	}
+}
+
+func Benchmark_CopyComplex128_Complex(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]complex128, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			var cps [128][]complex128
+			for i := range cps {
+				cps[i] = make([]complex128, tC.size)
+			}
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cps[i&127], original)
+			}
+		})
+	}
+}

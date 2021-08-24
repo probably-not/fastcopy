@@ -121,3 +121,48 @@ func Benchmark_FastCopyInt_Complex(b *testing.B) {
 		})
 	}
 }
+
+func Benchmark_CopyInt_Simple(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]int, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			cp := make([]int, len(original))
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cp, original)
+			}
+		})
+	}
+}
+
+func Benchmark_CopyInt_Complex(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]int, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			var cps [128][]int
+			for i := range cps {
+				cps[i] = make([]int, tC.size)
+			}
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cps[i&127], original)
+			}
+		})
+	}
+}

@@ -121,3 +121,48 @@ func Benchmark_FastCopyUintptr_Complex(b *testing.B) {
 		})
 	}
 }
+
+func Benchmark_CopyUintptr_Simple(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]uintptr, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			cp := make([]uintptr, len(original))
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cp, original)
+			}
+		})
+	}
+}
+
+func Benchmark_CopyUintptr_Complex(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]uintptr, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			var cps [128][]uintptr
+			for i := range cps {
+				cps[i] = make([]uintptr, tC.size)
+			}
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cps[i&127], original)
+			}
+		})
+	}
+}

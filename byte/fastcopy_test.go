@@ -121,3 +121,48 @@ func Benchmark_FastCopyByte_Complex(b *testing.B) {
 		})
 	}
 }
+
+func Benchmark_CopyByte_Simple(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]byte, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			cp := make([]byte, len(original))
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cp, original)
+			}
+		})
+	}
+}
+
+func Benchmark_CopyByte_Complex(b *testing.B) {
+	for _, tC := range testCases {
+		b.Run(tC.desc, func(sub *testing.B) {
+			original := make([]byte, tC.size)
+			for i := 0; i < len(original); i++ {
+				if rand.Intn(2) > 0 {
+					original[i] = 1
+				}
+			}
+
+			var cps [128][]byte
+			for i := range cps {
+				cps[i] = make([]byte, tC.size)
+			}
+
+			sub.ResetTimer()
+			sub.ReportAllocs()
+			for i := 0; i < sub.N; i++ {
+				copy(cps[i&127], original)
+			}
+		})
+	}
+}
