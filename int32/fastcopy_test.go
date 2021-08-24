@@ -1,6 +1,7 @@
 package int32
 
 import (
+	"fmt"
 	"math/rand"
 	"reflect"
 	"testing"
@@ -77,8 +78,31 @@ func Test_FastCopyInt32_Simple(t *testing.T) {
 	}
 }
 
+var benchCases = []struct {
+	desc string
+	size int
+}{
+	{desc: "0", size: 0},
+	{desc: fmt.Sprint(1 << 1), size: 1 << 1},
+	{desc: fmt.Sprint(1 << 2), size: 1 << 2},
+	{desc: fmt.Sprint(1 << 3), size: 1 << 3},
+	{desc: fmt.Sprint(1 << 4), size: 1 << 4},
+	{desc: fmt.Sprint(1 << 5), size: 1 << 5},
+	{desc: fmt.Sprint(1 << 6), size: 1 << 6},
+	{desc: fmt.Sprint(1 << 7), size: 1 << 7},
+	{desc: fmt.Sprint(1 << 8), size: 1 << 8},
+	{desc: fmt.Sprint(1 << 9), size: 1 << 9},
+	{desc: fmt.Sprint(1 << 10), size: 1 << 10},
+	{desc: fmt.Sprint(1 << 11), size: 1 << 11},
+	{desc: fmt.Sprint(1 << 12), size: 1 << 12},
+	{desc: fmt.Sprint(1 << 13), size: 1 << 13},
+	{desc: fmt.Sprint(1 << 14), size: 1 << 14},
+	{desc: fmt.Sprint(1 << 15), size: 1 << 15},
+	{desc: fmt.Sprint(1 << 16), size: 1 << 16},
+}
+
 func Benchmark_FastCopyInt32_Simple(b *testing.B) {
-	for _, tC := range testCases {
+	for _, tC := range benchCases {
 		b.Run(tC.desc, func(sub *testing.B) {
 			original := make([]int32, tC.size)
 			for i := 0; i < len(original); i++ {
@@ -99,7 +123,7 @@ func Benchmark_FastCopyInt32_Simple(b *testing.B) {
 }
 
 func Benchmark_FastCopyInt32_Complex(b *testing.B) {
-	for _, tC := range testCases {
+	for _, tC := range benchCases {
 		b.Run(tC.desc, func(sub *testing.B) {
 			original := make([]int32, tC.size)
 			for i := 0; i < len(original); i++ {
@@ -123,7 +147,7 @@ func Benchmark_FastCopyInt32_Complex(b *testing.B) {
 }
 
 func Benchmark_CopyInt32_Simple(b *testing.B) {
-	for _, tC := range testCases {
+	for _, tC := range benchCases {
 		b.Run(tC.desc, func(sub *testing.B) {
 			original := make([]int32, tC.size)
 			for i := 0; i < len(original); i++ {
@@ -144,7 +168,7 @@ func Benchmark_CopyInt32_Simple(b *testing.B) {
 }
 
 func Benchmark_CopyInt32_Complex(b *testing.B) {
-	for _, tC := range testCases {
+	for _, tC := range benchCases {
 		b.Run(tC.desc, func(sub *testing.B) {
 			original := make([]int32, tC.size)
 			for i := 0; i < len(original); i++ {
