@@ -65,12 +65,12 @@ func main() {
 		os.Exit(0)
 	}
 
-	b, err := os.ReadFile("fastcopy.go.tmpl")
+	b, err := os.ReadFile("fastcopy_go1.17.go.tmpl")
 	if err != nil {
 		log.Fatalf("Unable to read template file fastcopy.go.tmpl with error: %v", err)
 	}
 
-	t, err := template.New("fastcopy").Funcs(template.FuncMap{
+	t, err := template.New("fastcopy_go1.17").Funcs(template.FuncMap{
 		"Title": strings.Title,
 		"Iterate": func(count int) []int {
 			iter := make([]int, count)
@@ -81,7 +81,7 @@ func main() {
 		},
 	}).Parse(string(b))
 	if err != nil {
-		log.Fatalf("Unable to parse template file fastcopy.go.tmpl with error: %v", err)
+		log.Fatalf("Unable to parse template file fastcopy_go1.17.go.tmpl with error: %v", err)
 	}
 
 	for _, v := range typesToGenerate {
