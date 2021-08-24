@@ -2,7 +2,7 @@
 
 // CODE GENERATED AUTOMATICALLY WITH github.com/probably-not/fastcopy/cmd/gen.go
 
-package fastcopy
+package uint16
 
 func CopyUint16Slice(dst, src []uint16) {
 	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.

@@ -2,7 +2,7 @@
 
 // CODE GENERATED AUTOMATICALLY WITH github.com/probably-not/fastcopy/cmd/gen.go
 
-package fastcopy
+package int32
 
 func CopyInt32Slice(dst, src []int32) {
 	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
