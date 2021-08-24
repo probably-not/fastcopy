@@ -1,0 +1,35 @@
+//go:build go1.17
+
+// CODE GENERATED AUTOMATICALLY WITH github.com/probably-not/fastcopy/cmd/gen.go
+
+package fastcopy
+
+func Copy{{ .T | Title }}Slice(dst, src []{{ .T }}) {
+	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
+	if len(src) > {{ .MaxN }} {
+		copy(dst, src)
+		return
+	}
+
+	if len(dst) < len(src) {
+		// If len(dst) is less than len(src), then we need to copy with the size equal to len(dst)
+		// in order to not panic by getting an array that is bigger than len(dst)
+		copy{{ .T | Title }}SliceIdx[len(dst)](dst, src)
+		return
+	}
+
+	// If len(src) is within our limits and greater than len(dst), then we need to copy with the
+	// size equal to len(src) in order to not panic by getting an array that is bigger than len(src)
+	copy{{ .T | Title }}SliceIdx[len(src)](dst, src)
+}
+
+var copy{{ .T | Title }}SliceIdx = [{{ .MaxL }}]func([]{{ .T }}, []{{ .T }}){
+	{{ range $val := Iterate .MaxL }}
+	{{ $val }}: copy{{ $.T | Title }}Slice{{ $val }},
+	{{ end }}
+}
+{{ with .CopyFuncGenerators }}{{ range . }}
+func copy{{ .T | Title }}Slice{{ .N }}(dst, src []{{ .T }}) {
+	*(*[{{ .N }}]{{ .T }})(dst) = *(*[{{ .N }}]{{ .T }})(src)
+}
+{{ end }}{{ end }}
