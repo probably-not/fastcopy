@@ -1,7 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"text/template"
@@ -24,9 +26,45 @@ type copyFuncGenerator struct {
 	T string
 }
 
-const maxN = 8192 // Generate functions for copying up until 8k.
+var (
+	maxN            int
+	typesToGenerate typesToGenerateList
+	primitiveTypes  = typesToGenerateList{
+		"bool", "string", "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32",
+		"uint64", "uintptr", "byte", "rune", "float32", "float64", "complex64", "complex128",
+	}
+	showHelp bool
+)
+
+type typesToGenerateList []string
+
+func (t *typesToGenerateList) Set(value string) error {
+	*t = append(*t, strings.Split(value, ",")...)
+	return nil
+}
+
+func (t *typesToGenerateList) String() string {
+	return fmt.Sprint(*t)
+}
+
+func init() {
+	flag.BoolVar(&showHelp, "help", false, "Show usage information.")
+	flag.IntVar(&maxN, "maxn", 8192, "The highest length for which to generate a copy function. Higher values will result in higher memory consumption and binary sizes.")
+}
 
 func main() {
+	flag.Var(&typesToGenerate, "types", "A comma-separated list of the types to generate fastcopy functions for. (default Go's basic primitive types)")
+	flag.Parse()
+
+	if len(typesToGenerate) == 0 {
+		typesToGenerate = primitiveTypes
+	}
+
+	if showHelp {
+		flag.Usage()
+		os.Exit(0)
+	}
+
 	b, err := os.ReadFile("fastcopy.go.tmpl")
 	if err != nil {
 		log.Fatalf("Unable to read template file fastcopy.go.tmpl with error: %v", err)
@@ -46,9 +84,7 @@ func main() {
 		log.Fatalf("Unable to parse template file fastcopy.go.tmpl with error: %v", err)
 	}
 
-	for _, v := range []string{
-		"bool", "string", "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32",
-		"uint64", "uintptr", "byte", "rune", "float32", "float64", "complex64", "complex128"} {
+	for _, v := range typesToGenerate {
 		data := fastcopy{
 			T:                  v,
 			MaxL:               maxN + 1, // Since we use it as the array size it needs to be plus one (I think?)
