@@ -65,12 +65,17 @@ func main() {
 		os.Exit(0)
 	}
 
-	b, err := os.ReadFile("fastcopy_go1.17.go.tmpl")
+	go117Bytes, err := os.ReadFile("fastcopy_go117.go.tmpl")
+	if err != nil {
+		log.Fatalf("Unable to read template file fastcopy_go1.17.go.tmpl with error: %v", err)
+	}
+
+	notGo117Bytes, err := os.ReadFile("fastcopy_go117_nobuild.go.tmpl")
 	if err != nil {
 		log.Fatalf("Unable to read template file fastcopy.go.tmpl with error: %v", err)
 	}
 
-	t, err := template.New("fastcopy_go1.17").Funcs(template.FuncMap{
+	templateFuncs := template.FuncMap{
 		"Title": strings.Title,
 		"Iterate": func(count int) []int {
 			iter := make([]int, count)
@@ -79,9 +84,16 @@ func main() {
 			}
 			return iter
 		},
-	}).Parse(string(b))
+	}
+
+	go117Tmpl, err := template.New("fastcopy_go117").Funcs(templateFuncs).Parse(string(go117Bytes))
 	if err != nil {
 		log.Fatalf("Unable to parse template file fastcopy_go1.17.go.tmpl with error: %v", err)
+	}
+
+	notGo117Tmpl, err := template.New("fastcopy_go117_nobuild").Funcs(templateFuncs).Parse(string(notGo117Bytes))
+	if err != nil {
+		log.Fatalf("Unable to parse template file fastcopy.go.tmpl with error: %v", err)
 	}
 
 	for _, v := range typesToGenerate {
@@ -101,13 +113,22 @@ func main() {
 			log.Fatalf("Unable to create directory for ./%s with error: %v", v, err)
 		}
 
-		file, err := os.Create(fmt.Sprintf("./%s/fastcopy_gen_go1.17.go", v))
+		go117File, err := os.Create(fmt.Sprintf("./%s/fastcopy_gen_go117.go", v))
 		if err != nil {
-			log.Fatalf("Unable to create generated file fastcopy.%s.gen.go with error: %v", v, err)
+			log.Fatalf("Unable to create generated file fastcopy_gen_go1.17.go for %v with error: %v", v, err)
 		}
-		err = t.Execute(file, data)
+		err = go117Tmpl.Execute(go117File, data)
 		if err != nil {
-			log.Fatalf("Unable to execute template for generated file fastcopy.%s.gen.go with error: %v", v, err)
+			log.Fatalf("Unable to execute template for generated file fastcopy_gen_go1.17.go for %v with error: %v", v, err)
+		}
+
+		notGo117File, err := os.Create(fmt.Sprintf("./%s/fastcopy_gen_go117_nobuild.go", v))
+		if err != nil {
+			log.Fatalf("Unable to create generated file fastcopy_gen_go117_nobuild.go for %v with error: %v", v, err)
+		}
+		err = notGo117Tmpl.Execute(notGo117File, data)
+		if err != nil {
+			log.Fatalf("Unable to execute template for generated file fastcopy_gen_go117_nobuild.go for %v with error: %v", v, err)
 		}
 		log.Println("Generated", v, "Fastcopy Functions!")
 	}
