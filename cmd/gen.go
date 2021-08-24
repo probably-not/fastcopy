@@ -70,7 +70,7 @@ func main() {
 		log.Fatalf("Unable to read template file fastcopy.go.tmpl with error: %v", err)
 	}
 
-	t, err := template.New("config").Funcs(template.FuncMap{
+	t, err := template.New("fastcopy").Funcs(template.FuncMap{
 		"Title": strings.Title,
 		"Iterate": func(count int) []int {
 			iter := make([]int, count)
