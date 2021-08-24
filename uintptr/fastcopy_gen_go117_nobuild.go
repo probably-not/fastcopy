@@ -4,6 +4,10 @@
 
 package uintptr
 
+// `isOptimized` is a constant used to ensure that the build constraint works appropriately.
+// It's not that I don't trust the build constraint... but... I don't trust them...
+const isOptimized = false
+
 func CopyUintptrSlice(dst, src []uintptr) {
 	copy(dst, src)
 }

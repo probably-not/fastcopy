@@ -4,6 +4,10 @@
 
 package uint16
 
+// `isOptimized` is a constant used to ensure that the build constraint works appropriately.
+// It's not that I don't trust the build constraint... but... I don't trust them...
+const isOptimized = true
+
 func CopyUint16Slice(dst, src []uint16) {
 	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
 	if len(src) > 5 {
