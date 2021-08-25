@@ -9,38 +9,75 @@ package int
 const isOptimized = true
 
 func CopyIntSlice(dst, src []int) {
-	// If len(src) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
-	if len(src) > 5 {
-		copy(dst, src)
-		return
-	}
-
+	// If len(dst) is less than len(src), then we need to copy with the size equal to len(dst)
+	// in order to not panic by getting an array that is bigger than len(dst)
 	if len(dst) < len(src) {
-		// If len(dst) is less than len(src), then we need to copy with the size equal to len(dst)
-		// in order to not panic by getting an array that is bigger than len(dst)
-		copyIntSliceIdx[len(dst)](dst, src)
-		return
+		switch len(dst) {
+		
+		case 0:
+			copyIntSlice0(dst, src)
+			return
+		
+		case 1:
+			copyIntSlice1(dst, src)
+			return
+		
+		case 2:
+			copyIntSlice2(dst, src)
+			return
+		
+		case 3:
+			copyIntSlice3(dst, src)
+			return
+		
+		case 4:
+			copyIntSlice4(dst, src)
+			return
+		
+		case 5:
+			copyIntSlice5(dst, src)
+			return
+		
+		default:
+			// If len(dst) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
+			copy(dst, src)
+			return
+		}
 	}
 
 	// If len(src) is within our limits and greater than len(dst), then we need to copy with the
 	// size equal to len(src) in order to not panic by getting an array that is bigger than len(src)
-	copyIntSliceIdx[len(src)](dst, src)
-}
-
-var copyIntSliceIdx = [6]func([]int, []int){
+	switch len(src) {
 	
-	0: copyIntSlice0,
+	case 0:
+		copyIntSlice0(dst, src)
+		return
 	
-	1: copyIntSlice1,
+	case 1:
+		copyIntSlice1(dst, src)
+		return
 	
-	2: copyIntSlice2,
+	case 2:
+		copyIntSlice2(dst, src)
+		return
 	
-	3: copyIntSlice3,
+	case 3:
+		copyIntSlice3(dst, src)
+		return
 	
-	4: copyIntSlice4,
+	case 4:
+		copyIntSlice4(dst, src)
+		return
 	
-	5: copyIntSlice5,
+	case 5:
+		copyIntSlice5(dst, src)
+		return
 	
+	default:
+		// If len(dst) is greater than the maximum that we have generated for, then we utilize the built-in copy function.
+		copy(dst, src)
+		return
+	}
 }
 
 func copyIntSlice0(dst, src []int) {
