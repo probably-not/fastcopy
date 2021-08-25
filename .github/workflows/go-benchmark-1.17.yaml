@@ -16,5 +16,7 @@ jobs:
           go-version: "1.17"
       - name: Install Dependencies
         run: go mod download
+      - name: Build Test Binary
+        run: go test -c github.com/probably-not/fastcopy/byte
       - name: Go Benchmark
-        run: go test -benchmem -bench=. github.com/probably-not/fastcopy/byte
+        run: ./byte.test -test.benchmem -test.bench=. github.com/probably-not/fastcopy/byte
