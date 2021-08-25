@@ -17,4 +17,4 @@ jobs:
       - name: Install Dependencies
         run: go mod download
       - name: Go Benchmark
-        run: go test -benchmem -bench=. $(go list ./...)
+        run: go test -benchmem -bench=. github.com/probably-not/fastcopy/byte
