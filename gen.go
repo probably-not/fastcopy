@@ -66,7 +66,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	go117Bytes, err := ioutil.ReadFile("fastcopy_go117.go.tmpl")
+	go117Bytes, err := ioutil.ReadFile("fastcopy_noswitch_go117.go.tmpl")
 	if err != nil {
 		log.Fatalf("Unable to read template file fastcopy_go1.17.go.tmpl with error: %v", err)
 	}
